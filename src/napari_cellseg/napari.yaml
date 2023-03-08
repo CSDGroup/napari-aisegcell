@@ -14,15 +14,12 @@ contributions:
     - id: napari-cellseg.make_sample_data
       python_name: napari_cellseg._sample_data:make_sample_data
       title: Load sample data from CellSeg
-    - id: napari-cellseg.make_qwidget
-      python_name: napari_cellseg._widget:ExampleQWidget
-      title: Make example QWidget
-    - id: napari-cellseg.make_magic_widget
-      python_name: napari_cellseg._widget:example_magic_widget
-      title: Make example magic widget
-    - id: napari-cellseg.make_func_widget
-      python_name: napari_cellseg._widget:example_function_widget
-      title: Make example function widget
+    - id: napari-cellseg.make_layer_widget
+      python_name: napari_cellseg:make_layer_mode_widget
+      title: Make layer mode widget
+    - id: napari-cellseg.make_batch_widget
+      python_name: napari_cellseg._widget_batch_mode:make_batch_mode_widget
+      title: Make batch mode widget
   readers:
     - command: napari-cellseg.get_reader
       accepts_directories: false
@@ -37,12 +34,9 @@ contributions:
   sample_data:
     - command: napari-cellseg.make_sample_data
       display_name: CellSeg
-      key: unique_id.1
+      key: sample1
   widgets:
-    - command: napari-cellseg.make_qwidget
-      display_name: Example QWidget
-    - command: napari-cellseg.make_magic_widget
-      display_name: Example Magic Widget
-    - command: napari-cellseg.make_func_widget
-      autogenerate: true
-      display_name: Example Function Widget
+    - command: napari-cellseg.make_layer_widget
+      display_name: Layer mode
+    - command: napari-cellseg.make_batch_widget
+      display_name: Batch mode
