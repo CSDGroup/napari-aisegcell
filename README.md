@@ -152,7 +152,7 @@ recall that using
 ## Data
 `napari-cellseg` is currently intended for single-class semantic segmentation. Input images are expected to be 8-bit or
 16-bit greyscale images. Segmentation masks are expected to decode background as 0 intensity and all intensities
->0 are converted to a single intensity value (255). Consequently, different instances of a class (instance
+\>0 are converted to a single intensity value (255). Consequently, different instances of a class (instance
 segmentation) or multi-class segmentations are handled as single-class segmentations. Have a look at
 [this notebook](https://github.com/CSDGroup/cell_segmentation/blob/main/notebooks/data_example.ipynb)
 for a data example.
