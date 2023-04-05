@@ -48,7 +48,7 @@ you do not want to concern yourself with virtual environments or the command lin
 may disrupt this plugin.
 
 `napari-cellseg` was tested with
-````bash
+```bash
 OS = macOS 12.6.3/ubuntu 22.10/windows 10
 python = 3.8.6
 torch = 1.10.2
