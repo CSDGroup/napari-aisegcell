@@ -89,6 +89,7 @@ TOOLTIPS = {
 
 def make_layer_mode_widget():
     @magicgui(
+        label_data=dict(widget_type="Label", label="<br><b>Data:</b>"),
         img=dict(
             label="Input Image",
             tooltip=TOOLTIPS["img"],
@@ -182,6 +183,7 @@ def make_layer_mode_widget():
     )
     def layer_mode_widget(
         viewer: "napari.viewer.Viewer",
+        label_data: str,
         img: "napari.layers.Image",
         label_nn: str,
         model_type: str,
