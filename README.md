@@ -31,6 +31,10 @@ https://napari.org/stable/plugins/index.html
     - [One-click](#one-click)
   - [Data](#data)
   - [Documentation](#documentation)
+    - [First launch](#first-launch)
+    - [Launch napari]((#launch-napari))
+    - [Layer mode](#layer-mode)
+    - [Batch mode](#batch-mode)
   - [Image annotation tools](#image-annotation-tools)
   - [Citation](#citation)
   - [Contributing](#contributing)
@@ -57,9 +61,10 @@ pytorch-lightning = 1.5.9
 ```
 
 ### Command line
-Installation requires a command line application (e.g. `Terminal`) with [git] and [python] installed. If you do not
-have python installed already, we recommend installing it using the
-[Anaconda distribution](https://www.anaconda.com/products/distribution). If you operate on `Windows` we recommend using
+`napari` must be installed from command line to install `napari cellseg` from command line. Installation requires a
+command line application (e.g. `Terminal`) with [git] and [python] installed. If you do not have python installed
+already, we recommend installing it using the [Anaconda distribution](https://www.anaconda.com/products/distribution).
+If you operate on `Windows` we recommend using
 [`Ubuntu on Windows`](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-11-with-gui-support#1-overview)
 as command line application. Alternatively, you can install
 [`Anaconda`](https://docs.anaconda.com/anaconda/user-guide/getting-started/) and use `Anaconda Powershell Prompt`.
@@ -120,8 +125,8 @@ dependencies (i.e. prevent potential interference with your virtual environment)
  [`Linux`](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/#verify-you-have-a-cuda-capable-gpu)) and
  update their drivers if necessary.
 
-6) [Install `torch`/`torchvision`](https://pytorch.org/get-started/previous-versions/) compatible with your system.
-`cell_segmentation` was tested with `torch` version `1.10.2`, `torchvision` version `0.11.3`, and `cuda` version
+6) (Optional) [Install `torch`/`torchvision`](https://pytorch.org/get-started/previous-versions/) compatible with your
+system. `cell_segmentation` was tested with `torch` version `1.10.2`, `torchvision` version `0.11.3`, and `cuda` version
 `11.3.1`. Depending on your OS, your `CPU` or `GPU` (and `CUDA` version) the installation may change
 
 ```bash
@@ -136,7 +141,8 @@ pip install torch==1.10.2 torchvision==0.11.3
 
 ```
 
-7) [Install `pytorch-lightning`](https://www.pytorchlightning.ai). `cell_segmentation` was tested with version `1.5.9`.
+7) (Optional) [Install `pytorch-lightning`](https://www.pytorchlightning.ai). `cell_segmentation` was tested with
+version `1.5.9`.
 
 ```bash
 # note the installation of v1.5.9 does not use pip install lightning
@@ -158,6 +164,45 @@ segmentation) or multi-class segmentations are handled as single-class segmentat
 for a data example.
 
 ## Documentation
+`napari-cellseg` has two modes: The [layer mode](#layer-mode) and the [batch mode](#batch-mode). Layer mode is
+intended to explore if existing trained models in `napari-cellseg` are suitable for your data. Batch mode is
+intended for high-throughput image segmentation once you have confirmed that existing models are well suited for
+your data.
+
+### First launch
+The first time you launch `napari-cellseg`, `torch, torchvision, pytorch-lightning` will be automatically
+installed if you have skipped steps 5)-7) of the [installation](#installation). The napari window will freeze
+during download and installation. Depending on your setup this may take several minutes (~GBs of download). Similarly,
+the first time you are running a pre-trained model the model weights (.CKPT file) will be downloaded and will
+delay the prediction (~MBs of download).
+
+### Launch napari
+The `napari` bundled app is launched by opening the desktop shortcut. To launch napari as a command line
+application
+
+1) Open the terminal and activate the environment you installed `napari-cellseg` into
+
+    ```bash
+    conda activate napari
+    ```
+2) Open `napari`
+
+    ```bash
+    napari
+    ```
+
+### Layer mode
+Open the layer mode in the menu `Plugins>napari-cellseg>Layer mode`.
+
+![Layer mode](https://github.com/CSDGroup/napari-cellseg/raw/main/images/napari-cellseg_layer_mode.png)
+
+#### Data section
+
+#### Neural network section
+
+#### Post-processing section
+
+### Batch mode
 
 ## Image annotation tools
 Available tools to annotate segmentations include:
