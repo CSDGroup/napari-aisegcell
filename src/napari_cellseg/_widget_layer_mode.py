@@ -282,7 +282,9 @@ def make_layer_mode_widget():
             dilate=dilate,
         )
 
-        viewer.add_labels(mask, name=mask_name, opacity=0.7)
+        viewer.add_labels(
+            mask, name=mask_name, opacity=0.7, color={255: "blue"}
+        )
 
     # widgets for model types
     widget_for_modeltype = {
