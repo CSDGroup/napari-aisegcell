@@ -8,8 +8,7 @@
 [![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari-cellseg)](https://napari-hub.org/plugins/napari-cellseg)
 
 A [napari] plugin to segment cell nuclei and whole cells in bright field microscopy images. `napari-cellseg` uses
-[`cellseg`](https://github.com/CSDGroup/cell_segmentation) for segmentation. Please cite
-[this paper](#citation) if you are using this plugin in your research.
+[cellseg] for segmentation. Please cite [this paper](#citation) if you are using this plugin in your research.
 
 ![Screenshot](https://github.com/CSDGroup/napari-cellseg/raw/main/images/napari-cellseg_screenshot.png)
 
@@ -35,6 +34,7 @@ https://napari.org/stable/plugins/index.html
     - [Launch napari]((#launch-napari))
     - [Layer mode](#layer-mode)
     - [Batch mode](#batch-mode)
+    - [Trained models](#trained-models)
   - [Image annotation tools](#image-annotation-tools)
   - [Citation](#citation)
   - [Contributing](#contributing)
@@ -192,17 +192,58 @@ application
     ```
 
 ### Layer mode
-Open the layer mode in the menu `Plugins>napari-cellseg>Layer mode`.
+Open the layer mode in the menu `Plugins>napari-cellseg>Layer mode`. Select the parameters you want to use to
+obtain your segmentation and select the `Run` button.
 
 ![Layer mode](https://github.com/CSDGroup/napari-cellseg/raw/main/images/napari-cellseg_layer_mode.png)
 
 #### Data section
+In the Data section (magenta) you can select the images you want to segment from a drop-down menu. Only images that are
+loaded in the `napari` [layer tab](https://napari.org/stable/guides/layers.html) are available for selection.
 
 #### Neural network section
+In the neural network section (cyan) you can select the neural net you want to use for segmentation. The section
+has three parameters
+
+  - `Model type`
+    - `NucSeg`: Select this option to use a pre-trained [cellseg] model to segment nuclei (see [trained models](#trained-models)).
+    - `CellSeg`: Select this option to use a pre-trained [cellseg] model to segment whole cells (see [trained models](#trained-models)).
+    - `Custom`: Select this option if you want to load a [cellseg] model that does not ship with `napari-cellseg`.
+      Custom models can be obtained by training your own [cellseg] model or obtaining [cellseg] models from 3rd
+      parties. You must select the checkpoint (.ckpt) file in the emerging `Custom Model` parameter.
+  - `Pre-trained Model`: Drop-down menu to select the available pre-trained models for `NucSeg` or `CellSeg`.
+    - `Bright Field`: a model to segment nuclei/whole cells in bright field. Currently, no other image modalities
+      are available.
 
 #### Post-processing section
+In the post-processing section (green) a selection of conventional post-processing steps are available
+
+  - `Instance Segmentation`: Check this box to return instance segmentations instead of semantic segmentations.
+  - `Remove Holes <`: Removes holes in objects (e.g. nuclei) \<X pixels.
+  - `Minimum object size`: Removes objects of size \<X pixels before the dilation step.
+  - `Maximum object size`: Removes objects of size \>X pixels before the dilation step.
+  - `Dilation`: Dilate (\>0) or erode (\<0) objects by X pixels (see [here](https://docs.opencv.org/3.4/db/df6/tutorial_erosion_dilatation.html)).
 
 ### Batch mode
+Open the batch mode in the menu `Plugins>napari-cellseg>Bayer mode`. Select the parameters you want to use to
+obtain your segmentations and select the `Run` button.
+
+The [neural network section](#neural-network-section) and [post-processing-section](#post-processing-section) are
+the same as in the layer mode.
+
+![Layer mode](https://github.com/CSDGroup/napari-cellseg/raw/main/images/napari-cellseg_batch_mode.png)
+
+#### Data section
+
+
+### Trained models
+We provide trained models:
+
+| modality | image format | model | example image | description | availability |
+| :-- | :-: | :-: | :-: | :-: | :-- |
+| bright field nucleus segmentation | 2D grayscale | U-Net | <img src="https://github.com/CSDGroup/cell_segmentation/raw/main/images/nucseg.png" title="example nucleus segmentation" width="180px" align="center"> | Trained on a data set (link to data set) of 9849 images (~620k nuclei). | link to model weights (link to zenodo/model zoo) |
+| bright field whole cell segmentation | 2D grayscale | U-Net | <img src="https://github.com/CSDGroup/cell_segmentation/raw/main/images/cellseg.png" title="example whole cell segmentation" width="180px" align="center"> | Trained on a data set (link to data set) of 226 images (~12k cells). | link to model weights (link to zenodo/model zoo) |
+
 
 ## Image annotation tools
 Available tools to annotate segmentations include:
@@ -242,8 +283,8 @@ If you encounter any problems, please [file an issue] along with a detailed desc
 
 [file an issue]: https://github.com/CSDGroup/napari-cellseg/issues
 
+[cellseg]: https://github.com/CSDGroup/cell_segmentation
 [git]: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
-[napari]: https://github.com/napari/napari
 [tox]: https://tox.readthedocs.io/en/latest/
 [pip]: https://pypi.org/project/pip/
 [PyPI]: https://pypi.org/
