@@ -234,7 +234,7 @@ the same as in the layer mode.
 ![Layer mode](https://github.com/CSDGroup/napari-cellseg/raw/main/images/napari-cellseg_batch_mode.png)
 
 #### Data section
-
+In the data section (magenta) you can select the
 
 ### Trained models
 We provide trained models:
