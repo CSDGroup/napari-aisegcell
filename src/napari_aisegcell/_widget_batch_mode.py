@@ -12,14 +12,14 @@ TODO:
         * generate new file on Euler with $SCRATCH paths of images
         * save predictions on $SCRATCH
         * send back files to output directory
-* run button: calls cellseg_predict
+* run button: calls aisegcell_predict
     * euler cluster: needs to return JOBID to napari plugin for "cancel" and
     "status queury"
 * status queury:
     * returns if job is in queue/running (how long)/estimate of when it will
     be finished?
 * cancel button:
-    * local: stop `cellseg_predict` (how?)
+    * local: stop `aisegcell_predict` (how?)
     * euler cluster: send bkill command to cluster
 * output has estimate of segmentation quality (GA's suggestion)
     * with GT mask (= IoU), without mask (predict IoU based on mask features)
@@ -45,7 +45,7 @@ except ImportError:
 from magicgui import magicgui
 from skimage import io
 
-from napari_cellseg._utils import (
+from napari_aisegcell._utils import (
     _postprocess,
     _preprocess,
     change_handler,
@@ -335,14 +335,14 @@ def make_batch_mode_widget():
         import pandas as pd
         import pooch
         import torch
-        from cellseg.models.unet import LitUnet
+        from aisegcell.models.unet import LitUnet
 
         # Fetch models
         # TODO: add versions for models
         # TODO: change location of models
         # TODO: does not work with GitHub actions
         THATCHER = pooch.create(
-            path=pooch.os_cache("napari_cellseg"),
+            path=pooch.os_cache("napari_aisegcell"),
             base_url="https://polybox.ethz.ch/remote.php/webdav/unet_models/",
             registry={
                 "cellseg_model.ckpt": (
@@ -548,7 +548,7 @@ def make_batch_mode_widget():
         #      worker_postprocessing.pause
 
         #   works if computing on local GPU
-        #   does not work when computing on cluster -> use cellseg_predict
+        #   does not work when computing on cluster -> use aisegcell_predict
 
         # TODO: cluster mode for submissions
         #   submit job with scp and provide email alert when the job is done

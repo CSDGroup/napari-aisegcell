@@ -25,7 +25,7 @@ def make_sample_data():
     # Fetch image
     # TODO: change location of image
     THATCHER = pooch.create(
-        path=pooch.os_cache("napari_cellseg"),
+        path=pooch.os_cache("napari_aisegcell"),
         base_url="https://polybox.ethz.ch/remote.php/webdav/unet_models/",
         registry={
             "sample1.png": (

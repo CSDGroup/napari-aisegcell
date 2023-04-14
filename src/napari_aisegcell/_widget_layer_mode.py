@@ -31,7 +31,7 @@ except ImportError:
 
 from magicgui import magicgui
 
-from napari_cellseg._utils import _postprocess, _preprocess, change_handler
+from napari_aisegcell._utils import _postprocess, _preprocess, change_handler
 
 if TYPE_CHECKING:
     import napari
@@ -201,7 +201,7 @@ def make_layer_mode_widget():
         # import packages at run time
         import pooch
         import torch
-        from cellseg.models.unet import LitUnet
+        from aisegcell.models.unet import LitUnet
 
         # convert device to torch.device
         device = torch.device(device)
@@ -211,7 +211,7 @@ def make_layer_mode_widget():
         # TODO: change location of models
         # TODO: does not work with GitHub actions
         THATCHER = pooch.create(
-            path=pooch.os_cache("napari_cellseg"),
+            path=pooch.os_cache("napari_aisegcell"),
             base_url="https://polybox.ethz.ch/remote.php/webdav/unet_models/",
             registry={
                 "cellseg_model.ckpt": (

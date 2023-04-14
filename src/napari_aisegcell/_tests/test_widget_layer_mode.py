@@ -10,7 +10,7 @@ def viewer_widget(make_napari_viewer: Callable[..., napari.Viewer]):
     # from https://github.com/MouseLand/cellpose-napari
     viewer = make_napari_viewer()
     _, widget = viewer.window.add_plugin_dock_widget(
-        plugin_name="napari-cellseg", widget_name="Layer mode"
+        plugin_name="napari-aisegcell", widget_name="Layer mode"
     )
     return viewer, widget
 
@@ -19,7 +19,7 @@ def test_basic_function(qtbot, viewer_widget):
     viewer, widget = viewer_widget
     assert len(viewer.window._dock_widgets) == 1
 
-    viewer.open_sample("napari-cellseg", "sample1")
+    viewer.open_sample("napari-aisegcell", "sample1")
     viewer.layers[0].data = viewer.layers[0].data[-256:, -256:]
 
     widget()  # run segmentation with all default parameters
