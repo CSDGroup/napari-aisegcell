@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 import torch
 
-from napari_cellseg._utils import (
+from napari_aisegcell._utils import (
     _postprocess,
     _preprocess,
     check_order,

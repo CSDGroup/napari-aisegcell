@@ -1,16 +1,16 @@
-# napari-cellseg
+# napari-aiSEGcell
 
-[![License BSD-3](https://img.shields.io/pypi/l/napari-cellseg.svg?color=green)](https://github.com/CSDGroup/napari-cellseg/raw/main/LICENSE)
-[![PyPI](https://img.shields.io/pypi/v/napari-cellseg.svg?color=green)](https://pypi.org/project/napari-cellseg)
-[![Python Version](https://img.shields.io/pypi/pyversions/napari-cellseg.svg?color=green)](https://python.org)
-[![tests](https://github.com/CSDGroup/napari-cellseg/workflows/tests/badge.svg)](https://github.com/CSDGroup/napari-cellseg/actions)
-[![codecov](https://codecov.io/gh/CSDGroup/napari-cellseg/branch/main/graph/badge.svg)](https://codecov.io/gh/CSDGroup/napari-cellseg)
-[![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari-cellseg)](https://napari-hub.org/plugins/napari-cellseg)
+[![License BSD-3](https://img.shields.io/pypi/l/napari-aisegcell.svg?color=green)](https://github.com/CSDGroup/napari-aisegcell/raw/main/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/napari-aisegcell.svg?color=green)](https://pypi.org/project/napari-aisegcell)
+[![Python Version](https://img.shields.io/pypi/pyversions/napari-aisegcell.svg?color=green)](https://python.org)
+[![tests](https://github.com/CSDGroup/napari-aisegcell/workflows/tests/badge.svg)](https://github.com/CSDGroup/napari-aisegcell/actions)
+[![codecov](https://codecov.io/gh/CSDGroup/napari-aisegcell/branch/main/graph/badge.svg)](https://codecov.io/gh/CSDGroup/napari-aisegcell)
+[![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari-aisegcell)](https://napari-hub.org/plugins/napari-aisegcell)
 
-A [napari] plugin to segment cell nuclei and whole cells in bright field microscopy images. `napari-cellseg` uses
-[cellseg] for segmentation. Please cite [this paper](#citation) if you are using this plugin in your research.
+A [napari] plugin to segment cell nuclei and whole cells in bright field microscopy images. `napari-aisegcell` uses
+[aisegcell] for segmentation. Please cite [this paper](#citation) if you are using this plugin in your research.
 
-![Screenshot](https://github.com/CSDGroup/napari-cellseg/raw/main/images/napari-cellseg_screenshot.png)
+![Screenshot](https://github.com/CSDGroup/napari-aisegcell/raw/main/images/napari-aisegcell_screenshot.png)
 
 ----------------------------------
 
@@ -42,8 +42,8 @@ https://napari.org/stable/plugins/index.html
   - [Issues](#issues)
 
 ## Installation
-There are two ways to install `napari-cellseg`: First, you can install `napari-cellseg` from command line. Second, you
-have `napari` already installed as a graphical user interface (GUI) and install `napari-cellseg` from the GUI menu.
+There are two ways to install `napari-aisegcell`: First, you can install `napari-aisegcell` from command line. Second, you
+have `napari` already installed as a graphical user interface (GUI) and install `napari-aisegcell` from the GUI menu.
 
 We recommend the [command line](#command-line) installation as it provides fine-grained control of the
 installation to prevent conflicts with existing napari plugins. Use the [one-click](#one-click) installation if
@@ -51,7 +51,7 @@ you do not want to concern yourself with virtual environments or the command lin
 [one-click](#one-click) installation may introduce conflicts with already installed plugins or new plugin installations
 may disrupt this plugin.
 
-`napari-cellseg` was tested with
+`napari-aisegcell` was tested with
 ```bash
 OS = macOS 12.6.3/ubuntu 22.10/windows 10
 python = 3.8.6
@@ -61,7 +61,7 @@ pytorch-lightning = 1.5.9
 ```
 
 ### Command line
-`napari` must be installed from command line to install `napari cellseg` from command line. Installation requires a
+`napari` must be installed from command line to install `napari aisegcell` from command line. Installation requires a
 command line application (e.g. `Terminal`) with [git] and [python] installed. If you do not have python installed
 already, we recommend installing it using the [Anaconda distribution](https://www.anaconda.com/products/distribution).
 If you operate on `Windows` we recommend using
@@ -73,7 +73,7 @@ An introductory tutorial on how to use `git` and GitHub can be found
 
 1) (Optional) If you already [installed napari](https://napari.org/stable/#installation) in a
 [virtual environment](https://realpython.com/python-virtual-environments-a-primer/) you can skip this step.
-However, you may want to install `napari-cellseg` in a fresh environment to avoid conflicts with existing
+However, you may want to install `napari-aisegcell` in a fresh environment to avoid conflicts with existing
 plugins. Create a new virtual environment for `napari`. [Here](https://testdriven.io/blog/python-environments/) is a
 list of different python virtual environment tools. Open your command line application and create a (e.g. `conda`)
 virtual environment
@@ -100,21 +100,21 @@ virtual environment
     conda install -c anaconda git
     ```
 
-4) Install `napari-cellseg`
+4) Install `napari-aisegcell`
 
     1) with [pip] from [PyPI]
 
       ```bash
-      pip install napari-cellseg
+      pip install napari-aisegcell
       ```
     2) with [pip] from GitHub (= latest development version)
 
       ```bash
-      pip install git+https://github.com/CSDGroup/napari-cellseg.git
+      pip install git+https://github.com/CSDGroup/napari-aisegcell.git
       ```
 
-With step 4) completed you have successfully installed `napari-cellseg`. You can proceed with the
-[documentation](#documentation) on how to use `napari-cellseg`. *NOTE*, that when opening the plugin for the
+With step 4) completed you have successfully installed `napari-aisegcell`. You can proceed with the
+[documentation](#documentation) on how to use `napari-aisegcell`. *NOTE*, that when opening the plugin for the
 first time, the remaining dependencies (`torch, torchvision, pytorch-lightning`) will be automatically installed
 via [light-the-torch](https://github.com/pmeier/light-the-torch). If you prefer to manually install the remaining
 dependencies (i.e. prevent potential interference with your virtual environment), proceed with step 5).
@@ -126,7 +126,7 @@ dependencies (i.e. prevent potential interference with your virtual environment)
  update their drivers if necessary.
 
 6) (Optional) [Install `torch`/`torchvision`](https://pytorch.org/get-started/previous-versions/) compatible with your
-system. `cell_segmentation` was tested with `torch` version `1.10.2`, `torchvision` version `0.11.3`, and `cuda` version
+system. `aisegcell` was tested with `torch` version `1.10.2`, `torchvision` version `0.11.3`, and `cuda` version
 `11.3.1`. Depending on your OS, your `CPU` or `GPU` (and `CUDA` version) the installation may change
 
 ```bash
@@ -141,7 +141,7 @@ pip install torch==1.10.2 torchvision==0.11.3
 
 ```
 
-7) (Optional) [Install `pytorch-lightning`](https://www.pytorchlightning.ai). `cell_segmentation` was tested with
+7) (Optional) [Install `pytorch-lightning`](https://www.pytorchlightning.ai). `aisegcell` was tested with
 version `1.5.9`.
 
 ```bash
@@ -150,27 +150,27 @@ pip install pytorch-lightning==1.5.9
 ```
 
 ### One-click
-Using the one-click installation of `napari-cellseg` is as easy as opening `napari`, selecting
-`Plugins>Install/Uninstall Plugins...` and searching for `napari-cellseg` in the search bar. Select `install` and
-restart `napari` for `napari-cellseg` to appear in the list of installed plugins in the `Plugins` menu. Please
+Using the one-click installation of `napari-aisegcell` is as easy as opening `napari`, selecting
+`Plugins>Install/Uninstall Plugins...` and searching for `napari-aisegcell` in the search bar. Select `install` and
+restart `napari` for `napari-aisegcell` to appear in the list of installed plugins in the `Plugins` menu. Please
 recall that using
 
 ## Data
-`napari-cellseg` is currently intended for single-class semantic segmentation. Input images are expected to be 8-bit or
+`napari-aisegcell` is currently intended for single-class semantic segmentation. Input images are expected to be 8-bit or
 16-bit greyscale images. Segmentation masks are expected to decode background as 0 intensity and all intensities
 \>0 are converted to a single intensity value (255). Consequently, different instances of a class (instance
 segmentation) or multi-class segmentations are handled as single-class segmentations. Have a look at
-[this notebook](https://github.com/CSDGroup/cell_segmentation/blob/main/notebooks/data_example.ipynb)
+[this notebook](https://github.com/CSDGroup/aisegcell/blob/main/notebooks/data_example.ipynb)
 for a data example.
 
 ## Documentation
-`napari-cellseg` has two modes: The [layer mode](#layer-mode) and the [batch mode](#batch-mode). Layer mode is
-intended to explore if existing trained models in `napari-cellseg` are suitable for your data. Batch mode is
+`napari-aisegcell` has two modes: The [layer mode](#layer-mode) and the [batch mode](#batch-mode). Layer mode is
+intended to explore if existing trained models in `napari-aisegcell` are suitable for your data. Batch mode is
 intended for high-throughput image segmentation once you have confirmed that existing models are well suited for
 your data.
 
 ### First launch
-The first time you launch `napari-cellseg`, `torch, torchvision, pytorch-lightning` will be automatically
+The first time you launch `napari-aisegcell`, `torch, torchvision, pytorch-lightning` will be automatically
 installed if you have skipped steps 5)-7) of the [installation](#installation). The napari window will freeze
 during download and installation. Depending on your setup this may take several minutes (~GBs of download). Similarly,
 the first time you are running a pre-trained model the model weights (.CKPT file) will be downloaded and will
@@ -180,7 +180,7 @@ delay the prediction (~MBs of download).
 The `napari` bundled app is launched by opening the desktop shortcut. To launch napari as a command line
 application
 
-1) Open the terminal and activate the environment you installed `napari-cellseg` into
+1) Open the terminal and activate the environment you installed `napari-aisegcell` into
 
     ```bash
     conda activate napari
@@ -192,10 +192,10 @@ application
     ```
 
 ### Layer mode
-Open the layer mode in the menu `Plugins>napari-cellseg>Layer mode`. Select the parameters you want to use to
+Open the layer mode in the menu `Plugins>napari-aisegcell>Layer mode`. Select the parameters you want to use to
 obtain your segmentation and select the `Run` button.
 
-![Layer mode](https://github.com/CSDGroup/napari-cellseg/raw/main/images/napari-cellseg_layer_mode.png)
+![Layer mode](https://github.com/CSDGroup/napari-aisegcell/raw/main/images/napari-aisegcell_layer_mode.png)
 
 #### Data section
 In the Data section (magenta) you can select the images you want to segment from a drop-down menu. Only images that are
@@ -206,12 +206,12 @@ In the neural network section (cyan) you can select the neural net you want to u
 has three parameters
 
   - `Model type`
-    - `NucSeg`: Select this option to use a pre-trained [cellseg] model to segment nuclei (see [trained models](#trained-models)).
-    - `CellSeg`: Select this option to use a pre-trained [cellseg] model to segment whole cells (see [trained models](#trained-models)).
-    - `Custom`: Select this option if you want to load a [cellseg] model that does not ship with `napari-cellseg`.
-      Custom models can be obtained by training your own [cellseg] model or obtaining [cellseg] models from 3rd
+    - `NucSeg`: Select this option to use a pre-trained [aisegcell] model to segment nuclei (see [trained models](#trained-models)).
+    - `aisegcell`: Select this option to use a pre-trained [aisegcell] model to segment whole cells (see [trained models](#trained-models)).
+    - `Custom`: Select this option if you want to load a [aisegcell] model that does not ship with `napari-aisegcell`.
+      Custom models can be obtained by training your own [aisegcell] model or obtaining [aisegcell] models from 3rd
       parties. You must select the checkpoint (.ckpt) file in the emerging `Custom Model` parameter.
-  - `Pre-trained Model`: Drop-down menu to select the available pre-trained models for `NucSeg` or `CellSeg`.
+  - `Pre-trained Model`: Drop-down menu to select the available pre-trained models for `NucSeg` or `aisegcell`.
     - `Bright Field`: a model to segment nuclei/whole cells in bright field. Currently, no other image modalities
       are available.
 
@@ -225,13 +225,13 @@ In the post-processing section (green) a selection of conventional post-processi
   - `Dilation`: Dilate (\>0) or erode (\<0) objects by X pixels (see [here](https://docs.opencv.org/3.4/db/df6/tutorial_erosion_dilatation.html)).
 
 ### Batch mode
-Open the batch mode in the menu `Plugins>napari-cellseg>Bayer mode`. Select the parameters you want to use to
+Open the batch mode in the menu `Plugins>napari-aisegcell>Bayer mode`. Select the parameters you want to use to
 obtain your segmentations and select the `Run` button.
 
 The [neural network section](#neural-network-section) and [post-processing-section](#post-processing-section) are
 the same as in the layer mode.
 
-![Layer mode](https://github.com/CSDGroup/napari-cellseg/raw/main/images/napari-cellseg_batch_mode.png)
+![Layer mode](https://github.com/CSDGroup/napari-aisegcell/raw/main/images/napari-aisegcell_batch_mode.png)
 
 #### Data section
 In the data section (magenta) you can select the
@@ -241,8 +241,8 @@ We provide trained models:
 
 | modality | image format | model | example image | description | availability |
 | :-- | :-: | :-: | :-: | :-: | :-- |
-| bright field nucleus segmentation | 2D grayscale | U-Net | <img src="https://github.com/CSDGroup/cell_segmentation/raw/main/images/nucseg.png" title="example nucleus segmentation" width="180px" align="center"> | Trained on a data set (link to data set) of 9849 images (~620k nuclei). | link to model weights (link to zenodo/model zoo) |
-| bright field whole cell segmentation | 2D grayscale | U-Net | <img src="https://github.com/CSDGroup/cell_segmentation/raw/main/images/cellseg.png" title="example whole cell segmentation" width="180px" align="center"> | Trained on a data set (link to data set) of 226 images (~12k cells). | link to model weights (link to zenodo/model zoo) |
+| bright field nucleus segmentation | 2D grayscale | U-Net | <img src="https://github.com/CSDGroup/aisegcell/raw/main/images/nucseg.png" title="example nucleus segmentation" width="180px" align="center"> | Trained on a data set (link to data set) of 9849 images (~620k nuclei). | link to model weights (link to zenodo/model zoo) |
+| bright field whole cell segmentation | 2D grayscale | U-Net | <img src="https://github.com/CSDGroup/aisegcell/raw/main/images/aisegcell.png" title="example whole cell segmentation" width="180px" align="center"> | Trained on a data set (link to data set) of 224 images (~12k cells). | link to model weights (link to zenodo/model zoo) |
 
 
 ## Image annotation tools
@@ -264,7 +264,7 @@ the coverage at least stays the same before you submit a pull request.
 ## License
 
 Distributed under the terms of the [BSD-3] license,
-"napari-cellseg" is free and open source software
+"napari-aisegcell" is free and open source software
 
 ## Issues
 
@@ -281,9 +281,9 @@ If you encounter any problems, please [file an issue] along with a detailed desc
 [Mozilla Public License 2.0]: https://www.mozilla.org/media/MPL/2.0/index.txt
 [cookiecutter-napari-plugin]: https://github.com/napari/cookiecutter-napari-plugin
 
-[file an issue]: https://github.com/CSDGroup/napari-cellseg/issues
+[file an issue]: https://github.com/CSDGroup/napari-aisegcell/issues
 
-[cellseg]: https://github.com/CSDGroup/cell_segmentation
+[aisegcell]: https://github.com/CSDGroup/aisegcell
 [git]: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
 [tox]: https://tox.readthedocs.io/en/latest/
 [pip]: https://pypi.org/project/pip/
