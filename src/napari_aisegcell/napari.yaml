@@ -2,15 +2,6 @@ name: napari-aisegcell
 display_name: aiSEGcell
 contributions:
   commands:
-    - id: napari-aisegcell.get_reader
-      python_name: napari_aisegcell._reader:napari_get_reader
-      title: Open data with aiSEGcell
-    - id: napari-aisegcell.write_multiple
-      python_name: napari_aisegcell._writer:write_multiple
-      title: Save multi-layer data with aiSEGcell
-    - id: napari-aisegcell.write_single_image
-      python_name: napari_aisegcell._writer:write_single_image
-      title: Save image data with aiSEGcell
     - id: napari-aisegcell.make_sample_data
       python_name: napari_aisegcell._sample_data:make_sample_data
       title: Load sample data from aiSEGcell
@@ -20,17 +11,6 @@ contributions:
     - id: napari-aisegcell.make_batch_widget
       python_name: napari_aisegcell._widget_batch_mode:make_batch_mode_widget
       title: Make batch mode widget
-  readers:
-    - command: napari-aisegcell.get_reader
-      accepts_directories: false
-      filename_patterns: ['*.npy']
-  writers:
-    - command: napari-aisegcell.write_multiple
-      layer_types: ['image*','labels*']
-      filename_extensions: []
-    - command: napari-aisegcell.write_single_image
-      layer_types: ['image']
-      filename_extensions: ['.npy']
   sample_data:
     - command: napari-aisegcell.make_sample_data
       display_name: aisegcell
