@@ -207,36 +207,28 @@ def make_layer_mode_widget():
         device = torch.device(device)
 
         # Fetch models
-        # TODO: add versions for models
-        # TODO: change location of models
-        # TODO: does not work with GitHub actions
-        THATCHER = pooch.create(
-            path=pooch.os_cache("napari_aisegcell"),
-            base_url="https://polybox.ethz.ch/remote.php/webdav/unet_models/",
-            registry={
-                "cellseg_model.ckpt": (
-                    "f76cb3d478a44e1ae80170f8b7b64911ff348"
-                    "eba03c040876829fbf4ef4f422c"
-                ),
-                "nucseg_model.ckpt": (
-                    "7e302470af7e2aba5bd456082a6185aa73417e"
-                    "ff49330554f9cd6382264f9b1f"
-                ),
-            },
-        )
-        polybox_acc = os.environ.get("POLYBOX_ACC")
-        polybox_pw = os.environ.get("POLYBOX_PW")
-        download_auth = pooch.HTTPDownloader(auth=(polybox_acc, polybox_pw))
-
-        # update model_type
         if model_type == "nucleus_segmentation":
-            path_model = THATCHER.fetch(
-                "nucseg_model.ckpt", downloader=download_auth
-            )
+            path_model = pooch.retrieve(
+                        url=(
+                            'https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/608641/'
+                            'best-f1-epoch377-step239651.ckpt?sequence=2&isAllowed=y'
+                         ),
+                        known_hash='7e302470af7e2aba5bd456082a6185aa73417eff49330554f9cd6382264f9b1f',
+                        fname='nucseg_model.ckpt',
+                        path=pooch.os_cache('napari_aisegcell'),
+                        progressbar=True
+                    )
         elif model_type == "cell_segmentation":
-            path_model = THATCHER.fetch(
-                "cellseg_model.ckpt", downloader=download_auth
-            )
+            path_model = pooch.retrieve(
+                        url=(
+                            'https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/608646/'
+                            'best-f1-epoch345-step9341.ckpt?sequence=1&isAllowed=y'
+                         ),
+                        known_hash='6c15e7ea7d8b035f7793b9a68bbce7819c5189a0815ac24bd5164201f127379f',
+                        fname='cellseg_model.ckpt',
+                        path=pooch.os_cache('napari_aisegcell'),
+                        progressbar=True
+                    )
         elif model_type == "custom model":
             path_model = model_custom
 
