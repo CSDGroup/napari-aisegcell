@@ -22,24 +22,21 @@ def make_sample_data():
     # add_image_kwargs
     # https://napari.org/stable/api/napari.Viewer.html#napari.Viewer.add_image
 
-    # Fetch image
-    # TODO: change location of image
-    THATCHER = pooch.create(
-        path=pooch.os_cache("napari_aisegcell"),
-        base_url="https://polybox.ethz.ch/remote.php/webdav/unet_models/",
-        registry={
-            "sample1.png": (
-                "6b533f7c1e2bb23c08fe17b91a8a4beff1bf2cc5eeec"
-                "15465bc7f0e5795cb7c9"
-            ),
-        },
-    )
-    polybox_acc = os.environ.get("POLYBOX_ACC")
-    polybox_pw = os.environ.get("POLYBOX_PW")
-    download_auth = pooch.HTTPDownloader(auth=(polybox_acc, polybox_pw))
+    # fetch image
+    path_img = pooch.retrieve(
+                url=(
+                    'https://github.com/CSDGroup/aisegcell/raw/'
+                    '521be0b66d497791d82e75c8211ac62cb31f6a2e/images/bf1.png'
+                 ),
+                known_hash=(
+                        '06047311573206ee8c31716ac0e25116a18159'
+                        'e48c1201c7d8b3cdbd398fc2b3'
+                    ),
+                fname='bf1.png',
+                path=pooch.os_cache('napari_aisegcell'),
+                progressbar=True
+            )
 
-    # update image
-    path_img = THATCHER.fetch("sample1.png", downloader=download_auth)
     img = io.imread(path_img)
 
-    return [(img, {"name": "sample1"})]
+    return [(img, {"name": "bf1"})]

@@ -19,7 +19,7 @@ def test_basic_function(qtbot, viewer_widget):
     viewer, widget = viewer_widget
     assert len(viewer.window._dock_widgets) == 1
 
-    viewer.open_sample("napari-aisegcell", "sample1")
+    viewer.open_sample("napari-aisegcell", "bf1")
     viewer.layers[0].data = viewer.layers[0].data[-256:, -256:]
 
     widget()  # run segmentation with all default parameters

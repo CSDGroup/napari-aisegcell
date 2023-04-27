@@ -13,8 +13,8 @@ contributions:
       title: Make batch mode widget
   sample_data:
     - command: napari-aisegcell.make_sample_data
-      display_name: aisegcell
-      key: sample1
+      display_name: bright field
+      key: bf1
   widgets:
     - command: napari-aisegcell.make_layer_widget
       display_name: Layer mode
