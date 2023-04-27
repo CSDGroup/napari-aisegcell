@@ -8,7 +8,9 @@
 [![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari-aisegcell)](https://napari-hub.org/plugins/napari-aisegcell)
 
 A [napari] plugin to segment cell nuclei and whole cells in bright field microscopy images. `napari-aisegcell` uses
-[aisegcell] for segmentation. Please cite [this paper](#citation) if you are using this plugin in your research.
+[aisegcell] for segmentation. This plugin can only be used to use already trained models for segmentation. If you
+want to train a new model use [aisegcell]. Please cite [this paper](#citation) if you are using this plugin in your 
+research.
 
 ![Screenshot](https://github.com/CSDGroup/napari-aisegcell/raw/main/images/napari-aisegcell_screenshot.png)
 
@@ -88,7 +90,7 @@ virtual environment
     conda activate napari
     ```
 
-3) (Optional) Skip this step if you have `napari` already installed. Install `napari`
+3) (Optional) Install `napari`. Skip this step if you have `napari` already installed.
 
     ```bash
     pip install "napari[all]"
@@ -102,7 +104,7 @@ virtual environment
 
 4) Install `napari-aisegcell`
 
-    1) with [pip] from [PyPI]
+    1) (NOT YET AVAILABLE) with [pip] from [PyPI]
 
       ```bash
       pip install napari-aisegcell
@@ -119,8 +121,8 @@ first time, the remaining dependencies (`torch, torchvision, pytorch-lightning`)
 via [light-the-torch](https://github.com/pmeier/light-the-torch). If you prefer to manually install the remaining
 dependencies (i.e. prevent potential interference with your virtual environment), proceed with step 5).
 
-5) (Optional) `GPUs` greatly speed up training and inference of U-Net and are available for `torch` (`v1.10.2`) for
-`Windows` and `Linux`. Check if your `GPU(s)` are CUDA compatible
+5) (Optional) `GPUs` greatly speed up training and inference of [aisegcell] and are available for `torch` (`v1.10.2`) 
+for `Windows` and `Linux`. Check if your `GPU(s)` are CUDA compatible
 ([`Windows`](https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/#verify-you-have-a-cuda-capable-gpu),
  [`Linux`](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/#verify-you-have-a-cuda-capable-gpu)) and
  update their drivers if necessary.
@@ -150,16 +152,16 @@ pip install pytorch-lightning==1.5.9
 ```
 
 ### One-click
-Using the one-click installation of `napari-aisegcell` is as easy as opening `napari`, selecting
+(*NOT YET AVAILABLE*) Using the one-click installation of `napari-aisegcell` is as easy as opening `napari`, selecting
 `Plugins>Install/Uninstall Plugins...` and searching for `napari-aisegcell` in the search bar. Select `install` and
 restart `napari` for `napari-aisegcell` to appear in the list of installed plugins in the `Plugins` menu. Please
-recall that using
+recall that one-click installing `napari-aisegcell` may interfere with existing plugin installations or new
+plugin installations may interfere with the `napari-aisegcell` plugin.
 
 ## Data
-`napari-aisegcell` is currently intended for single-class semantic segmentation. Input images are expected to be 8-bit or
-16-bit greyscale images. Segmentation masks are expected to decode background as 0 intensity and all intensities
-\>0 are converted to a single intensity value (255). Consequently, different instances of a class (instance
-segmentation) or multi-class segmentations are handled as single-class segmentations. Have a look at
+`napari-aisegcell` is currently intended for single-class semantic and instance segmentation. Input images are expected 
+to be 8-bit or 16-bit greyscale images. Segmentation masks are expected to decode background as 0 intensity and all intensities
+\>0 are converted to a single intensity value (255). Have a look at
 [this notebook](https://github.com/CSDGroup/aisegcell/blob/main/notebooks/data_example.ipynb)
 for a data example.
 
@@ -185,7 +187,7 @@ application
     ```bash
     conda activate napari
     ```
-2) Open `napari`
+2) Run `napari` in terminal
 
     ```bash
     napari
@@ -207,16 +209,18 @@ has three parameters
 
   - `Model type`
     - `NucSeg`: Select this option to use a pre-trained [aisegcell] model to segment nuclei (see [trained models](#trained-models)).
-    - `aisegcell`: Select this option to use a pre-trained [aisegcell] model to segment whole cells (see [trained models](#trained-models)).
+    - `CellSeg`: Select this option to use a pre-trained [aisegcell] model to segment whole cells (see [trained models](#trained-models)).
     - `Custom`: Select this option if you want to load a [aisegcell] model that does not ship with `napari-aisegcell`.
       Custom models can be obtained by training your own [aisegcell] model or obtaining [aisegcell] models from 3rd
       parties. You must select the checkpoint (.ckpt) file in the emerging `Custom Model` parameter.
-  - `Pre-trained Model`: Drop-down menu to select the available pre-trained models for `NucSeg` or `aisegcell`.
+  - `Pre-trained Model`: Drop-down menu to select the available pre-trained models for `NucSeg` or `CellSeg`.
     - `Bright Field`: a model to segment nuclei/whole cells in bright field. Currently, no other image modalities
       are available.
+  - `Computing Device`: Drop-down menu that lists computing devices (CPU/GPUs) available with your current `torch`
+    installation. 
 
 #### Post-processing section
-In the post-processing section (green) a selection of conventional post-processing steps are available
+In the post-processing section (green) a selection of common post-processing steps are available
 
   - `Instance Segmentation`: Check this box to return instance segmentations instead of semantic segmentations.
   - `Remove Holes <`: Removes holes in objects (e.g. nuclei) \<X pixels.
@@ -225,13 +229,13 @@ In the post-processing section (green) a selection of conventional post-processi
   - `Dilation`: Dilate (\>0) or erode (\<0) objects by X pixels (see [here](https://docs.opencv.org/3.4/db/df6/tutorial_erosion_dilatation.html)).
 
 ### Batch mode
-Open the batch mode in the menu `Plugins>napari-aisegcell>Bayer mode`. Select the parameters you want to use to
+Open the batch mode in the menu `Plugins>napari-aisegcell>Batch mode`. Select the parameters you want to use to
 obtain your segmentations and select the `Run` button.
 
 The [neural network section](#neural-network-section) and [post-processing-section](#post-processing-section) are
 the same as in the layer mode.
 
-![Layer mode](https://github.com/CSDGroup/napari-aisegcell/raw/main/images/napari-aisegcell_batch_mode.png)
+![Batch mode](https://github.com/CSDGroup/napari-aisegcell/raw/main/images/napari-aisegcell_batch_mode.png)
 
 #### Data section
 In the data section (magenta) you can select the
@@ -241,8 +245,8 @@ We provide trained models:
 
 | modality | image format | model | example image | description | availability |
 | :-- | :-: | :-: | :-: | :-: | :-- |
-| bright field nucleus segmentation | 2D grayscale | U-Net | <img src="https://github.com/CSDGroup/aisegcell/raw/main/images/nucseg.png" title="example nucleus segmentation" width="180px" align="center"> | Trained on a data set (link to data set) of 9849 images (~620k nuclei). | link to model weights (link to zenodo/model zoo) |
-| bright field whole cell segmentation | 2D grayscale | U-Net | <img src="https://github.com/CSDGroup/aisegcell/raw/main/images/aisegcell.png" title="example whole cell segmentation" width="180px" align="center"> | Trained on a data set (link to data set) of 224 images (~12k cells). | link to model weights (link to zenodo/model zoo) |
+| bright field nucleus segmentation | 2D grayscale | U-Net | <img src="https://github.com/CSDGroup/aisegcell/raw/main/images/nucseg.png" title="example nucleus segmentation" width="180px" align="center"> | Trained on a data set (link to data set) of 9849 images (~620k nuclei). | [ETH Research Collection](https://www.research-collection.ethz.ch/handle/20.500.11850/608641) |
+| bright field whole cell segmentation | 2D grayscale | U-Net | <img src="https://github.com/CSDGroup/aisegcell/raw/main/images/aisegcell.png" title="example whole cell segmentation" width="180px" align="center"> | Trained on a data set (link to data set) of 224 images (~12k cells). | [ETH Research Collection](https://www.research-collection.ethz.ch/handle/20.500.11850/608646) |
 
 
 ## Image annotation tools
