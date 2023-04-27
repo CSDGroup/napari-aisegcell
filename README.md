@@ -202,6 +202,7 @@ obtain your segmentation and select the `Run` button.
 #### Data section
 In the Data section (magenta) you can select the images you want to segment from a drop-down menu. Only images that are
 loaded in the `napari` [layer tab](https://napari.org/stable/guides/layers.html) are available for selection.
+Image formats must be readable by [`skimage.io.imread`](https://scikit-image.org/docs/stable/api/skimage.io.html#skimage.io.imread).
 
 #### Neural network section
 In the neural network section (cyan) you can select the neural net you want to use for segmentation. The section
@@ -238,7 +239,28 @@ the same as in the layer mode.
 ![Batch mode](https://github.com/CSDGroup/napari-aisegcell/raw/main/images/napari-aisegcell_batch_mode.png)
 
 #### Data section
-In the data section (magenta) you can select the
+In the data section (magenta) you can select the images you want to submit for batch processing.
+
+  - `Input`
+    - `Select file`: Select an existing input CSV file that follows the [aisegcell input format](https://github.com/CSDGroup/aisegcell/blob/main/notebooks/unet_example.ipynb)
+    - `Create file`: Create a CSV file that follows the [aisegcell input format](https://github.com/CSDGroup/aisegcell/blob/main/notebooks/unet_example.ipynb)
+      - `Input directory`: Select parent directory containing all images to segment. Images can be in subdirectories.
+      - `File pattern`: All files matching this pattern in your selected `Input directory` will be stored in the CSV file.
+        Use [wildcard characters](https://linuxhint.com/bash_wildcard_tutorial/) like `*` to capture all images
+        you want to segment in one run.
+        - Example 1 `*/*.png`: will select all `PNG` files in in all sub-directories of `Input directory`.
+        - Example 2 `position*z1.png`: will select all files in `Input directory` that start with "position" and
+          end with "z1.png"
+      - `Save as`: Name (and path) of the file that will be the input to your selected Neural Network. The file
+        can be used as input to `Select file`.
+      - `Mask suffix`: Mask suffix that will be appended to each mask file name.
+        - Example `suffix = "_mask"`: `my_image.png` -> `my_image_mask.png`
+      - `Output`:
+        - `Directory`: Directory to which all segmentation masks will be saved. Be aware that input images with 
+          identical file names will be appended with `Mask suffix` AND an ID. 
+        - `CSD format`: Store segmentation masks following the storage system of the [Cell Systems Dynamics group](https://bsse.ethz.ch/csd).
+          CSD format finds the deepest common directory of all input images, creates folders 'Analysis/Segmentation_YYMMDD', 
+          and reconstructs the unique parts of all input paths in "Segmentation_YYMMDD".
 
 ### Trained models
 We provide trained models:
@@ -246,7 +268,7 @@ We provide trained models:
 | modality | image format | model | example image | description | availability |
 | :-- | :-: | :-: | :-: | :-: | :-- |
 | bright field nucleus segmentation | 2D grayscale | U-Net | <img src="https://github.com/CSDGroup/aisegcell/raw/main/images/nucseg.png" title="example nucleus segmentation" width="180px" align="center"> | Trained on a data set (link to data set) of 9849 images (~620k nuclei). | [ETH Research Collection](https://www.research-collection.ethz.ch/handle/20.500.11850/608641) |
-| bright field whole cell segmentation | 2D grayscale | U-Net | <img src="https://github.com/CSDGroup/aisegcell/raw/main/images/aisegcell.png" title="example whole cell segmentation" width="180px" align="center"> | Trained on a data set (link to data set) of 224 images (~12k cells). | [ETH Research Collection](https://www.research-collection.ethz.ch/handle/20.500.11850/608646) |
+| bright field whole cell segmentation | 2D grayscale | U-Net | <img src="https://github.com/CSDGroup/aisegcell/raw/main/images/cellseg.png" title="example whole cell segmentation" width="180px" align="center"> | Trained on a data set (link to data set) of 224 images (~12k cells). | [ETH Research Collection](https://www.research-collection.ethz.ch/handle/20.500.11850/608646) |
 
 
 ## Image annotation tools

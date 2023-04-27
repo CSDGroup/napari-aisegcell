@@ -58,6 +58,6 @@ def test_basic_function(qtbot, viewer_widget):
     assert len(viewer.layers) == 2
     assert "mask_nucleus" in viewer.layers[-1].name
 
-    # check that the segmentation was proper, should yield 11 cells
+    # check that the segmentation was proper, should yield 2 cells
     mask_inst = label(viewer.layers[-1].data)
     assert mask_inst.max() == 2
