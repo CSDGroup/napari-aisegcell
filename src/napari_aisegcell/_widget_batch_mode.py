@@ -477,7 +477,7 @@ def make_batch_mode_widget():
         def predict_wrapper(data: pd.DataFrame, path_model: str, device: str):
             for i in range(len(data)):
                 # load image
-                img = io.imread(data.bf.iloc[i])
+                img = io.imread(data.bf.iloc[i], plugin="pil")
                 img_t = _preprocess(img=img, device=device)
 
                 # load model checkpoint for prediction
