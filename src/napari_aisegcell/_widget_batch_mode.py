@@ -29,18 +29,23 @@ TODO:
 import os
 from typing import TYPE_CHECKING, Union
 
+from importlib.util import find_spec
 from napari.qt.threading import thread_worker
 from napari.utils.notifications import show_info
 
-try:
-    import torch
-except ImportError:
-    show_info("Please wait while PyTorch dependencies are being installed")
-    os.system(
-        "ltt install torch==1.10.2 torchvision==0.11.3"
-        " pytorch-lightning==1.5.9"
-    )
-    import torch
+if find_spec("torch") is None:
+    show_info("Please wait while torch is installed...")
+    os.system("ltt install torch==1.10.2")
+
+if find_spec("torchvision") is None:
+    show_info("Please wait while torchvision is installed...")
+    os.system("ltt install torchvision==0.11.3")
+
+if find_spec("pytorch_lightning") is None:
+    show_info("Please wait while pytorch-lightning is installed...")
+    os.system("ltt install pytorch-lightning==1.5.9")
+
+import torch
 
 from magicgui import magicgui
 from skimage import io
