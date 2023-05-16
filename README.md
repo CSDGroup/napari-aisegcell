@@ -68,8 +68,7 @@ command line application (e.g. `Terminal`) with [git] and [python] installed. If
 already, we recommend installing it using the [Anaconda distribution](https://www.anaconda.com/products/distribution).
 If you operate on `Windows` we recommend using
 [`Ubuntu on Windows`](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-11-with-gui-support#1-overview)
-as command line application. Alternatively, you can install
-[`Anaconda`](https://docs.anaconda.com/anaconda/user-guide/getting-started/) and use `Anaconda Powershell Prompt`.
+as command line application. Alternatively, you can install `Anaconda` and use `Anaconda Powershell Prompt`.
 An introductory tutorial on how to use `git` and GitHub can be found
 [here](https://www.w3schools.com/git/default.asp?remote=github).
 

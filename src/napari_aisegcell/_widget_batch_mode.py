@@ -429,7 +429,10 @@ def make_batch_mode_widget():
                 del files
             elif output_fmt == "csd":
                 # find maximum common path
-                output_base_path = os.path.commonpath(tmp.bf.tolist())
+                if len(tmp.bf.tolist()) > 1:
+                    output_base_path = os.path.commonpath(tmp.bf.tolist())
+                else:
+                    output_base_path = os.path.dirname(tmp.bf.tolist()[0])
 
                 # change filepaths to relative paths
                 files = [
