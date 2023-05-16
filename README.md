@@ -66,9 +66,7 @@ pytorch-lightning = 1.5.9
 `napari` must be installed from command line to install `napari aisegcell` from command line. Installation requires a
 command line application (e.g. `Terminal`) with [git] and [python] installed. If you do not have python installed
 already, we recommend installing it using the [Anaconda distribution](https://www.anaconda.com/products/distribution).
-If you operate on `Windows` we recommend using
-[`Ubuntu on Windows`](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-11-with-gui-support#1-overview)
-as command line application. Alternatively, you can install `Anaconda` and use `Anaconda Powershell Prompt`.
+If you operate on `Windows` we recommend using `Anaconda Powershell Prompt` as command line application.
 An introductory tutorial on how to use `git` and GitHub can be found
 [here](https://www.w3schools.com/git/default.asp?remote=github).
 
