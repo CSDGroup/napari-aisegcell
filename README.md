@@ -1,5 +1,6 @@
 # napari-aiSEGcell
 
+[![DOI](https://zenodo.org/badge/610379780.svg)](https://zenodo.org/doi/10.5281/zenodo.10091929)
 [![License BSD-3](https://img.shields.io/pypi/l/napari-aisegcell.svg?color=green)](https://github.com/CSDGroup/napari-aisegcell/raw/main/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/napari-aisegcell.svg?color=green)](https://pypi.org/project/napari-aisegcell)
 [![Python Version](https://img.shields.io/pypi/pyversions/napari-aisegcell.svg?color=green)](https://python.org)
