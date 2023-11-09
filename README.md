@@ -101,12 +101,12 @@ virtual environment
 
 4) Install `napari-aisegcell`
 
-    1) (NOT YET AVAILABLE) with [pip] from [PyPI]
+    1) from [PyPI]
 
       ```bash
       pip install napari-aisegcell
       ```
-    2) with [pip] from GitHub (= latest development version)
+    2) from GitHub (= latest development version)
 
       ```bash
       pip install git+https://github.com/CSDGroup/napari-aisegcell.git
@@ -309,6 +309,5 @@ If you encounter any problems, please [file an issue] along with a detailed desc
 [aisegcell]: https://github.com/CSDGroup/aisegcell
 [git]: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
 [tox]: https://tox.readthedocs.io/en/latest/
-[pip]: https://pypi.org/project/pip/
 [PyPI]: https://pypi.org/
 [python]: https://www.python.org
