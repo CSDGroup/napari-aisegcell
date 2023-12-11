@@ -54,7 +54,7 @@ you do not want to concern yourself with virtual environments or the command lin
 [one-click](#one-click) installation may introduce conflicts with already installed plugins or new plugin installations
 may disrupt this plugin.
 
-`napari-aisegcell` was tested with
+Installing `napari-aisegcell` requires ~5 min and was tested with
 ```bash
 OS = macOS 12.6.3/ubuntu 22.10/windows 10
 python = 3.8.6
