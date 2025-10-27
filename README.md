@@ -88,21 +88,19 @@ virtual environment
     conda activate napari
     ```
 
-3) (Optional) Install `napari`. Skip this step if you have `napari` already installed.
+3) Install `pip<24.4` because `light-the-torch` currently does not support newer `pip` versions.
 
     ```bash
-    # necessary for now because of light-the-torch dependencies
     python -m pip install "pip<24.4"
-    pip install "napari[all]"
     ```
 
-3) (Optional) If you use `Anaconda Powershell Prompt`, install `git` through `conda`
+4) (Optional) If you use `Anaconda Powershell Prompt`, install `git` through `conda`
 
     ```bash
     conda install -c anaconda git
     ```
 
-4) Install `napari-aisegcell`
+5) Install `napari-aisegcell`
 
     1) from [PyPI]
 
@@ -119,15 +117,15 @@ With step 4) completed you have successfully installed `napari-aisegcell`. You c
 [documentation](#documentation) on how to use `napari-aisegcell`. *NOTE*, that when opening the plugin for the
 first time, the remaining dependencies (`torch, torchvision, pytorch-lightning`) will be automatically installed
 via [light-the-torch](https://github.com/pmeier/light-the-torch). If you prefer to manually install the remaining
-dependencies (i.e. prevent potential interference with your virtual environment), proceed with step 5).
+dependencies (i.e. prevent potential interference with your virtual environment), proceed with step 6).
 
-5) (Optional) `GPUs` greatly speed up training and inference of [aisegcell] and are available for `torch` (`2.9.0`) 
+6) (Optional) `GPUs` greatly speed up training and inference of [aisegcell] and are available for `torch` (`2.9.0`) 
 for `Windows` and `Linux`. Check if your `GPU(s)` are CUDA compatible
 ([`Windows`](https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/#verify-you-have-a-cuda-capable-gpu),
  [`Linux`](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/#verify-you-have-a-cuda-capable-gpu)) and
  update their drivers if necessary.
 
-6) (Optional) [Install `torch`/`torchvision`](https://pytorch.org/get-started/previous-versions/) compatible with your
+7) (Optional) [Install `torch`/`torchvision`](https://pytorch.org/get-started/previous-versions/) compatible with your
 system. `aisegcell` was tested with `torch` version `2.9.0`, `torchvision` version `0.24.0`, and `cuda` version
 `12.6`. Depending on your OS, your `CPU` or `GPU` (and `CUDA` version) the installation may change
 
@@ -143,7 +141,7 @@ system. `aisegcell` was tested with `torch` version `2.9.0`, `torchvision` versi
 
     ```
 
-7) (Optional) [Install `lightning`](https://lightning.ai). `aisegcell` was tested with
+8) (Optional) [Install `lightning`](https://lightning.ai). `aisegcell` was tested with
 version `2.5.5`.
 
     ```bash
