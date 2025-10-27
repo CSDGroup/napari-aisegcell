@@ -92,7 +92,7 @@ virtual environment
 
     ```bash
     # necessary for now because of light-the-torch dependencies
-    python -m pip install "pip<24.4" # necessary for now because of light-the-torch dependencies
+    python -m pip install "pip<24.4"
     pip install "napari[all]"
     ```
 

@@ -28,7 +28,7 @@ dependencies = [
     "imageio",
     "scikit-image",
     "light-the-torch",
-    "napari[all]"
+    "napari[all]",
     "aisegcell",
 ]
 
