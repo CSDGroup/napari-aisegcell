@@ -56,11 +56,11 @@ may disrupt this plugin.
 
 Installing `napari-aisegcell` requires ~5 min and was tested with
 ```bash
-OS = macOS 12.6.3/ubuntu 22.10/windows 10
-python = 3.8.6
-torch = 1.10.2
-torchvision = 0.11.3
-pytorch-lightning = 1.5.9
+OS = macOS 12.6.3/ubuntu 22.10/windows 11
+python = 3.13.9
+torch = 2.9.0
+torchvision = 0.24.0
+lightning = 2.5.5
 ```
 
 ### Command line
@@ -79,7 +79,7 @@ list of different python virtual environment tools. Open your command line appli
 virtual environment
 
     ```bash
-    conda create -n napari python=3.8
+    conda create -n napari python=3.13
     ```
 
 2) Activate your virtual environment that has `napari` installed or you want to install `napari` to
@@ -91,6 +91,8 @@ virtual environment
 3) (Optional) Install `napari`. Skip this step if you have `napari` already installed.
 
     ```bash
+    # necessary for now because of light-the-torch dependencies
+    python -m pip install "pip<24.4" # necessary for now because of light-the-torch dependencies
     pip install "napari[all]"
     ```
 
@@ -119,35 +121,34 @@ first time, the remaining dependencies (`torch, torchvision, pytorch-lightning`)
 via [light-the-torch](https://github.com/pmeier/light-the-torch). If you prefer to manually install the remaining
 dependencies (i.e. prevent potential interference with your virtual environment), proceed with step 5).
 
-5) (Optional) `GPUs` greatly speed up training and inference of [aisegcell] and are available for `torch` (`v1.10.2`) 
+5) (Optional) `GPUs` greatly speed up training and inference of [aisegcell] and are available for `torch` (`2.9.0`) 
 for `Windows` and `Linux`. Check if your `GPU(s)` are CUDA compatible
 ([`Windows`](https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/#verify-you-have-a-cuda-capable-gpu),
  [`Linux`](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/#verify-you-have-a-cuda-capable-gpu)) and
  update their drivers if necessary.
 
 6) (Optional) [Install `torch`/`torchvision`](https://pytorch.org/get-started/previous-versions/) compatible with your
-system. `aisegcell` was tested with `torch` version `1.10.2`, `torchvision` version `0.11.3`, and `cuda` version
-`11.3.1`. Depending on your OS, your `CPU` or `GPU` (and `CUDA` version) the installation may change
+system. `aisegcell` was tested with `torch` version `2.9.0`, `torchvision` version `0.24.0`, and `cuda` version
+`12.6`. Depending on your OS, your `CPU` or `GPU` (and `CUDA` version) the installation may change
 
-```bash
-# Windows/Linux CPU
-pip install torch==1.10.2+cpu torchvision==0.11.3+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html
+    ```bash
+    # Windows/Linux CPU
+    pip install torch==2.9.0 torchvision==0.24.0 --index-url https://download.pytorch.org/whl/cpu
 
-# Windows/Linux GPU (CUDA 11.3.X)
-pip install torch==1.10.2+cu113 torchvision==0.11.3+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
+    # Windows/Linux GPU (CUDA 12.6)
+    pip install torch==2.9.0 torchvision==0.24.0 --index-url https://download.pytorch.org/whl/cu126
 
-# macOS CPU
-pip install torch==1.10.2 torchvision==0.11.3
+    # macOS CPU
+    pip install torch==2.9.0 torchvision==0.24.0
 
-```
+    ```
 
-7) (Optional) [Install `pytorch-lightning`](https://www.pytorchlightning.ai). `aisegcell` was tested with
-version `1.5.9`.
+7) (Optional) [Install `lightning`](https://lightning.ai). `aisegcell` was tested with
+version `2.5.5`.
 
-```bash
-# note the installation of v1.5.9 does not use pip install lightning
-pip install pytorch-lightning==1.5.9
-```
+    ```bash
+    pip install lightning==2.5.5
+    ```
 
 ### One-click
 (*NOT YET AVAILABLE*) Using the one-click installation of `napari-aisegcell` is as easy as opening `napari`, selecting
@@ -278,7 +279,21 @@ Available tools to annotate segmentations include:
   - [ilastik](https://www.ilastik.org)
 
 ## Citation
-t.b.d.
+```
+@article{10.1371/journal.pcbi.1012361,
+    doi = {10.1371/journal.pcbi.1012361},
+    author = {Schirmacher, Daniel AND Armagan, Ümmünur AND Zhang, Yang AND Kull, Tobias AND Auler, Markus AND Schroeder, Timm},
+    journal = {PLOS Computational Biology},
+    publisher = {Public Library of Science},
+    title = {aiSEGcell: User-friendly deep learning-based segmentation of nuclei in transmitted light images},
+    year = {2024},
+    month = {08},
+    volume = {20},
+    url = {https://doi.org/10.1371/journal.pcbi.1012361},
+    pages = {1-28},
+    number = {8},
+}
+```
 
 ## Contributing
 

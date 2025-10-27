@@ -28,6 +28,7 @@ dependencies = [
     "imageio",
     "scikit-image",
     "light-the-torch",
+    "napari[all]"
     "aisegcell",
 ]
 
@@ -39,7 +40,6 @@ dev = [
     "pytest",  # https://docs.pytest.org/en/latest/contents.html
     "pytest-cov",  # https://pytest-cov.readthedocs.io/en/latest/
     "pytest-qt",  # https://pytest-qt.readthedocs.io/en/latest/
-    "napari",
     "pyqt5",
 ]
 
