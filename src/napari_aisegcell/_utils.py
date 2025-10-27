@@ -85,10 +85,46 @@ def rename_duplicates(s: list[str]) -> list[str]:
     return s
 
 
+def _to_gray2d(img, channel_axis=-1):
+    """
+    Convert an image that may be 2D grayscale or RGB/RGBA 'grayscale'
+    into a 2D grayscale array.
+
+    Parameters
+    ----------
+    img : np.ndarray or dask.array.Array
+        Input image. Expected shapes: (H, W), (H, W, 1), (H, W, 3|4).
+        If your data is channels-first, pass channel_axis=0.
+    channel_axis : int
+        Axis index of the color channels. Use -1 for channels-last, 0 for channels-first.
+
+    Returns
+    -------
+    gray : array-like
+        2D grayscale image.
+    """
+    a = img
+    if a.ndim == 2:
+        return a
+
+    # Move channels into the last axis to simplify logic
+    if channel_axis != -1:
+        a = np.moveaxis(a, channel_axis, -1)
+
+    if a.ndim != 3:
+        raise ValueError(f"Unsupported shape {a.shape}: expected 2D or 3D with a channel axis.")
+
+    H, W, C = a.shape
+
+    if C in (1, 3):
+        gray = a[..., 0]
+        return gray
+    else:
+        raise ValueError(f"Unsupported channel count {C}. Expected 1 or 3. 3D images are not supported.")
+
+
 def _preprocess(img: np.ndarray, device: str) -> torch.Tensor:
-    assert (
-        len(img.shape) == 2
-    ), f"Input image is expected to be 2D, but is {len(img.shape)}D."
+    img = _to_gray2d(img)
 
     # convert input image to tensor
     img = img[None, None, ...]  # (batch, colorchannel, H, W)
