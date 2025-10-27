@@ -506,6 +506,10 @@ def make_batch_mode_widget():
 
                 if not instance_segmentation:
                     mask = mask.astype(np.uint8)
+                else:
+                    if mask.max() > 65535 and data.out.iloc[i].endswith('.png'):
+                        raise Warning("Mask may contain more than 65535 objects -> integer overflow.")
+                    mask = mask.astype(np.uint16)
 
                 io.imsave(data.out.iloc[i], mask)
 
