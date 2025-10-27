@@ -14,7 +14,7 @@ def viewer_widget(make_napari_viewer: Callable[..., napari.Viewer]):
     return viewer, widget
 
 
-def test_basic_function(qtbot, viewer_widget):
+def test_basic_function(viewer_widget):
     viewer, widget = viewer_widget
     assert len(viewer.window._dock_widgets) == 1
 
