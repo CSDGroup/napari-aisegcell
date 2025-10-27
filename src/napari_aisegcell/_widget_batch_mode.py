@@ -521,6 +521,9 @@ def make_batch_mode_widget():
         progress(worker)
         worker.start()
 
+        # TODO: still waiting for public API for this
+        viewer.window._status_bar._toggle_activity_dock(True)
+
     # widgets for input_fmt
     widget_for_input_fmt = {
         "select_file": [batch_mode_widget.file_select],
