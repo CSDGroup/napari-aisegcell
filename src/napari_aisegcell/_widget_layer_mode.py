@@ -1,17 +1,5 @@
 """
 This module contains the Layer Mode widget
-
-TODO:
-* input:
-    * checkbox to segment only on FoV
-* run button disabled if no image selected
-* cancel button: stop `cellseg_predict` -> necessary?
-* output has estimate of segmentation quality (GA's suggestion)
-    * input: bf + nuclear fluorescence from layer list
-    * run prediction with existing model
-    * tile input image and ask user to segment cells in these tiles
-    * with GT mask (= IoU), without mask (predict IoU based on mask features)
-
 """
 
 import os
@@ -22,15 +10,15 @@ from napari.utils.notifications import show_info
 
 if find_spec("torch") is None:
     show_info("Please wait while torch is installed")
-    os.system("ltt install torch==1.10.2")
+    os.system("ltt install torch==2.9.0")
 
 if find_spec("torchvision") is None:
     show_info("Please wait while torchvision is installed")
-    os.system("ltt install torchvision==0.11.3")
+    os.system("ltt install torchvision==0.24.0")
 
-if find_spec("pytorch_lightning") is None:
+if find_spec("lightning") is None:
     show_info("Please wait while pytorch-lightning is installed")
-    os.system("ltt install pytorch-lightning==1.5.9")
+    os.system("ltt install lightning==2.5.5")
 
 import torch
 
@@ -205,7 +193,6 @@ def make_layer_mode_widget():
     ) -> None:
         # import packages at run time
         import pooch
-        import torch
         from aisegcell.models.unet import LitUnet
 
         # convert device to torch.device
@@ -242,26 +229,14 @@ def make_layer_mode_widget():
         img_t = _preprocess(img_ar, device=device)
 
         # load model checkpoint for prediction
-        model = LitUnet.load_from_checkpoint(path_model)
-        model = model.to(device)
-
+        model = LitUnet.load_from_checkpoint(path_model).to(device)
         model.eval()
 
         # obtain mask
-        with torch.no_grad():
+        with torch.inference_mode():
             mask = model(img_t)
 
-        mask[mask < 0.5] = 0
-        mask[mask >= 0.5] = 1
-
-        # convert prediction to numpy array and plot in layers mode
-        mask = (
-            mask.mul(255)
-            .add_(0.5)
-            .clamp_(0, 255)
-            .to("cpu", torch.uint8)
-            .numpy()[0, 0, :, :]
-        )
+        mask = (mask >= 0.5).to(torch.uint8).mul_(255).cpu().numpy()[0, 0, :, :] 
 
         if model_type == "nucleus_segmentation":
             mask_name = "mask_nucleus"

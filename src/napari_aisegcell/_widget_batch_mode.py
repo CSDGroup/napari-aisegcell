@@ -14,16 +14,13 @@ TODO:
         * send back files to output directory
 * run button: calls aisegcell_predict
     * euler cluster: needs to return JOBID to napari plugin for "cancel" and
-    "status queury"
-* status queury:
+    "status query"
+* status query:
     * returns if job is in queue/running (how long)/estimate of when it will
     be finished?
 * cancel button:
     * local: stop `aisegcell_predict` (how?)
     * euler cluster: send bkill command to cluster
-* output has estimate of segmentation quality (GA's suggestion)
-    * with GT mask (= IoU), without mask (predict IoU based on mask features)
-
 """
 
 import os
@@ -35,15 +32,15 @@ from napari.utils.notifications import show_info
 
 if find_spec("torch") is None:
     show_info("Please wait while torch is installed...")
-    os.system("ltt install torch==1.10.2")
+    os.system("ltt install torch==2.9.0")
 
 if find_spec("torchvision") is None:
     show_info("Please wait while torchvision is installed...")
-    os.system("ltt install torchvision==0.11.3")
+    os.system("ltt install torchvision==0.24.0")
 
-if find_spec("pytorch_lightning") is None:
-    show_info("Please wait while pytorch-lightning is installed...")
-    os.system("ltt install pytorch-lightning==1.5.9")
+if find_spec("lightning") is None:
+    show_info("Please wait while lightning is installed...")
+    os.system("ltt install lightning==2.5.5")
 
 import torch
 
@@ -339,7 +336,7 @@ def make_batch_mode_widget():
         import numpy as np
         import pandas as pd
         import pooch
-        import torch
+        from napari.utils.progress import progress
         from aisegcell.models.unet import LitUnet
 
         # Fetch models
@@ -483,32 +480,20 @@ def make_batch_mode_widget():
             progress={"total": len(tmp), "desc": "segmentation progress"}
         )
         def predict_wrapper(data: pd.DataFrame, path_model: str, device: str):
+            # load model checkpoint for prediction
+            model = LitUnet.load_from_checkpoint(path_model).to(device)
+            model.eval()
+
             for i in range(len(data)):
                 # load image
                 img = io.imread(data.bf.iloc[i], plugin="pil")
                 img_t = _preprocess(img=img, device=device)
 
-                # load model checkpoint for prediction
-                model = LitUnet.load_from_checkpoint(path_model)
-                model = model.to(device)
-
-                model.eval()
-
                 # obtain mask
-                with torch.no_grad():
+                with torch.inference_mode():
                     mask = model(img_t)
 
-                mask[mask < 0.5] = 0
-                mask[mask >= 0.5] = 1
-
-                # convert prediction to numpy array for post-processing
-                mask = (
-                    mask.mul(255)
-                    .add_(0.5)
-                    .clamp_(0, 255)
-                    .to("cpu", torch.uint8)
-                    .numpy()[0, 0, :, :]
-                )
+                mask = (mask >= 0.5).to(torch.uint8).mul_(255).cpu().numpy()[0, 0, :, :] 
 
                 mask = _postprocess(
                     mask=mask,
@@ -529,30 +514,8 @@ def make_batch_mode_widget():
         worker = predict_wrapper(
             data=tmp, path_model=path_model, device=device
         )
-        viewer.window._status_bar._toggle_activity_dock(True)
+        progress(worker)
         worker.start()
-
-        # button = QPushButton("STOP!")
-        # button.clicked.connect(worker_predict.quit)
-        # button.clicked.connect(worker_progress.quit)
-        # worker_predict.finished.connect(button.clicked.disconnect)
-        # worker_progress.finished.connect(button.clicked.disconnect)
-        # viewer.window.add_dock_widget(button)
-
-        # predict_wrapper
-        #   1. create postprocessing wrapper
-        #   2. instantiate worker_postprocessing
-        #   3. if worker_predict yields send output worker_postprocessing
-        #      and resume
-        #   4. on worker_postprocessing yielded call
-        #      worker_postprocessing.pause
-
-        #   works if computing on local GPU
-        #   does not work when computing on cluster -> use aisegcell_predict
-
-        # TODO: cluster mode for submissions
-        #   submit job with scp and provide email alert when the job is done
-        #   job is submitted by pressing run plugin is not blocked anymore
 
     # widgets for input_fmt
     widget_for_input_fmt = {

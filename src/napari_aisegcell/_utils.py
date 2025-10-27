@@ -1,6 +1,6 @@
 import functools
 import os
-from typing import List
+from typing import Union
 
 import numpy as np
 import torch
@@ -37,13 +37,13 @@ def change_handler(*widgets, init=True, debug=False):
     return decorator_change_handler
 
 
-def check_order(l1: List[str], l2: List[str]) -> bool:
+def check_order(l1: list[str], l2: list[str]) -> bool:
     """
     Check if 2 lists of paths have identical names and order of files.
     """
     assert len(l1) == len(l2), "l1 and l2 must be of same length."
-    assert all(isinstance(i, str) for i in l1), "l1 must be a List[str]"
-    assert all(isinstance(i, str) for i in l2), "l2 must be a List[str]"
+    assert all(isinstance(i, str) for i in l1), "l1 must be a list[str]"
+    assert all(isinstance(i, str) for i in l2), "l2 must be a list[str]"
 
     l1 = [f.split(os.path.sep)[-1] for f in l1]
     l2 = [f.split(os.path.sep)[-1] for f in l2]
@@ -51,13 +51,13 @@ def check_order(l1: List[str], l2: List[str]) -> bool:
     return l1 == l2
 
 
-def rename_duplicates(s: List[str]) -> List[str]:
+def rename_duplicates(s: list[str]) -> list[str]:
     """
     Add IDs to duplicate file names. From
     https://stackoverflow.com/a/30651843/2437514
     """
     assert isinstance(s, list), f's must be of type list, but is "{type(s)}".'
-    assert all(isinstance(i, str) for i in s), "s must be a List[str]"
+    assert all(isinstance(i, str) for i in s), "s must be a list[str]"
 
     dups = {}
 
@@ -85,15 +85,13 @@ def rename_duplicates(s: List[str]) -> List[str]:
     return s
 
 
-def _preprocess(img: np.ndarray, device: str) -> torch.FloatTensor:
+def _preprocess(img: np.ndarray, device: str) -> torch.Tensor:
     assert (
         len(img.shape) == 2
     ), f"Input image is expected to be 2D, but is {len(img.shape)}D."
 
     # convert input image to tensor
-    img = np.expand_dims(img, axis=2)
-    img = np.expand_dims(img, axis=2)
-    img = img.transpose((3, 2, 0, 1))  # (batch, colorchannel, height, width)
+    img = img[None, None, ...]  # (batch, colorchannel, H, W)
 
     # check for np.uint16 (not supported by torch) format
     if img.dtype == np.uint16:
@@ -111,7 +109,7 @@ def _preprocess(img: np.ndarray, device: str) -> torch.FloatTensor:
 
     img_t = torch.from_numpy(img).type(torch.FloatTensor)
 
-    # normalize tensor
+    # scale to [0,1] via std=max_intensity
     transform = transforms.Normalize(0, max_intensity)
     img_t = transform(img_t)
     img_t = img_t.to(device)
