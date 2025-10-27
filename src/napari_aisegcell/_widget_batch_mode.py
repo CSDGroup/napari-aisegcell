@@ -343,8 +343,8 @@ def make_batch_mode_widget():
         if model_type == "nucleus_segmentation":
             path_model = pooch.retrieve(
                         url=(
-                            'https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/608641/'
-                            'best-f1-epoch377-step239651.ckpt?sequence=2&isAllowed=y'
+                            'https://www.research-collection.ethz.ch/bitstreams/'
+                            '44277865-5ac5-49e6-909a-7bc2e85fee93/download'
                          ),
                         known_hash='7e302470af7e2aba5bd456082a6185aa73417eff49330554f9cd6382264f9b1f',
                         fname='nucseg_model.ckpt',
@@ -354,8 +354,8 @@ def make_batch_mode_widget():
         elif model_type == "cell_segmentation":
             path_model = pooch.retrieve(
                         url=(
-                            'https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/608646/'
-                            'best-f1-epoch345-step9341.ckpt?sequence=1&isAllowed=y'
+                            'https://www.research-collection.ethz.ch/bitstreams/'
+                            'f28e6c37-9bfa-45bb-8442-899851aa6033/download'
                          ),
                         known_hash='6c15e7ea7d8b035f7793b9a68bbce7819c5189a0815ac24bd5164201f127379f',
                         fname='cellseg_model.ckpt',
