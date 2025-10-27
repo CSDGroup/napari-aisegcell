@@ -14,16 +14,13 @@ TODO:
         * send back files to output directory
 * run button: calls aisegcell_predict
     * euler cluster: needs to return JOBID to napari plugin for "cancel" and
-    "status queury"
-* status queury:
+    "status query"
+* status query:
     * returns if job is in queue/running (how long)/estimate of when it will
     be finished?
 * cancel button:
     * local: stop `aisegcell_predict` (how?)
     * euler cluster: send bkill command to cluster
-* output has estimate of segmentation quality (GA's suggestion)
-    * with GT mask (= IoU), without mask (predict IoU based on mask features)
-
 """
 
 import os
@@ -35,15 +32,15 @@ from napari.utils.notifications import show_info
 
 if find_spec("torch") is None:
     show_info("Please wait while torch is installed...")
-    os.system("ltt install torch==1.10.2")
+    os.system("ltt install torch==2.9.0")
 
 if find_spec("torchvision") is None:
     show_info("Please wait while torchvision is installed...")
-    os.system("ltt install torchvision==0.11.3")
+    os.system("ltt install torchvision==0.24.0")
 
-if find_spec("pytorch_lightning") is None:
-    show_info("Please wait while pytorch-lightning is installed...")
-    os.system("ltt install pytorch-lightning==1.5.9")
+if find_spec("lightning") is None:
+    show_info("Please wait while lightning is installed...")
+    os.system("ltt install lightning==2.5.5")
 
 import torch
 
@@ -339,15 +336,15 @@ def make_batch_mode_widget():
         import numpy as np
         import pandas as pd
         import pooch
-        import torch
+        from napari.utils.progress import progress
         from aisegcell.models.unet import LitUnet
 
         # Fetch models
         if model_type == "nucleus_segmentation":
             path_model = pooch.retrieve(
                         url=(
-                            'https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/608641/'
-                            'best-f1-epoch377-step239651.ckpt?sequence=2&isAllowed=y'
+                            'https://www.research-collection.ethz.ch/bitstreams/'
+                            '44277865-5ac5-49e6-909a-7bc2e85fee93/download'
                          ),
                         known_hash='7e302470af7e2aba5bd456082a6185aa73417eff49330554f9cd6382264f9b1f',
                         fname='nucseg_model.ckpt',
@@ -357,8 +354,8 @@ def make_batch_mode_widget():
         elif model_type == "cell_segmentation":
             path_model = pooch.retrieve(
                         url=(
-                            'https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/608646/'
-                            'best-f1-epoch345-step9341.ckpt?sequence=1&isAllowed=y'
+                            'https://www.research-collection.ethz.ch/bitstreams/'
+                            'f28e6c37-9bfa-45bb-8442-899851aa6033/download'
                          ),
                         known_hash='6c15e7ea7d8b035f7793b9a68bbce7819c5189a0815ac24bd5164201f127379f',
                         fname='cellseg_model.ckpt',
@@ -483,32 +480,20 @@ def make_batch_mode_widget():
             progress={"total": len(tmp), "desc": "segmentation progress"}
         )
         def predict_wrapper(data: pd.DataFrame, path_model: str, device: str):
+            # load model checkpoint for prediction
+            model = LitUnet.load_from_checkpoint(path_model).to(device)
+            model.eval()
+
             for i in range(len(data)):
                 # load image
                 img = io.imread(data.bf.iloc[i], plugin="pil")
                 img_t = _preprocess(img=img, device=device)
 
-                # load model checkpoint for prediction
-                model = LitUnet.load_from_checkpoint(path_model)
-                model = model.to(device)
-
-                model.eval()
-
                 # obtain mask
-                with torch.no_grad():
+                with torch.inference_mode():
                     mask = model(img_t)
 
-                mask[mask < 0.5] = 0
-                mask[mask >= 0.5] = 1
-
-                # convert prediction to numpy array for post-processing
-                mask = (
-                    mask.mul(255)
-                    .add_(0.5)
-                    .clamp_(0, 255)
-                    .to("cpu", torch.uint8)
-                    .numpy()[0, 0, :, :]
-                )
+                mask = (mask >= 0.5).to(torch.uint8).mul_(255).cpu().numpy()[0, 0, :, :] 
 
                 mask = _postprocess(
                     mask=mask,
@@ -521,6 +506,10 @@ def make_batch_mode_widget():
 
                 if not instance_segmentation:
                     mask = mask.astype(np.uint8)
+                else:
+                    if mask.max() > 65535 and data.out.iloc[i].endswith('.png'):
+                        raise Warning("Mask may contain more than 65535 objects -> integer overflow.")
+                    mask = mask.astype(np.uint16)
 
                 io.imsave(data.out.iloc[i], mask)
 
@@ -529,30 +518,11 @@ def make_batch_mode_widget():
         worker = predict_wrapper(
             data=tmp, path_model=path_model, device=device
         )
-        viewer.window._status_bar._toggle_activity_dock(True)
+        progress(worker)
         worker.start()
 
-        # button = QPushButton("STOP!")
-        # button.clicked.connect(worker_predict.quit)
-        # button.clicked.connect(worker_progress.quit)
-        # worker_predict.finished.connect(button.clicked.disconnect)
-        # worker_progress.finished.connect(button.clicked.disconnect)
-        # viewer.window.add_dock_widget(button)
-
-        # predict_wrapper
-        #   1. create postprocessing wrapper
-        #   2. instantiate worker_postprocessing
-        #   3. if worker_predict yields send output worker_postprocessing
-        #      and resume
-        #   4. on worker_postprocessing yielded call
-        #      worker_postprocessing.pause
-
-        #   works if computing on local GPU
-        #   does not work when computing on cluster -> use aisegcell_predict
-
-        # TODO: cluster mode for submissions
-        #   submit job with scp and provide email alert when the job is done
-        #   job is submitted by pressing run plugin is not blocked anymore
+        # TODO: still waiting for public API for this
+        viewer.window._status_bar._toggle_activity_dock(True)
 
     # widgets for input_fmt
     widget_for_input_fmt = {

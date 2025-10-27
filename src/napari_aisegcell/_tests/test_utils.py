@@ -58,7 +58,7 @@ def test_preprocess():
     assert torch.all(img_t == img_t_expected)
     assert torch.all(img_16_t == img_t_expected)
 
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         _preprocess(np.zeros((1, 2, 2)), device="cpu")
 
 

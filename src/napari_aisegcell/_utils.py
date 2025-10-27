@@ -1,6 +1,6 @@
 import functools
 import os
-from typing import List
+from typing import Union
 
 import numpy as np
 import torch
@@ -37,13 +37,13 @@ def change_handler(*widgets, init=True, debug=False):
     return decorator_change_handler
 
 
-def check_order(l1: List[str], l2: List[str]) -> bool:
+def check_order(l1: list[str], l2: list[str]) -> bool:
     """
     Check if 2 lists of paths have identical names and order of files.
     """
     assert len(l1) == len(l2), "l1 and l2 must be of same length."
-    assert all(isinstance(i, str) for i in l1), "l1 must be a List[str]"
-    assert all(isinstance(i, str) for i in l2), "l2 must be a List[str]"
+    assert all(isinstance(i, str) for i in l1), "l1 must be a list[str]"
+    assert all(isinstance(i, str) for i in l2), "l2 must be a list[str]"
 
     l1 = [f.split(os.path.sep)[-1] for f in l1]
     l2 = [f.split(os.path.sep)[-1] for f in l2]
@@ -51,13 +51,13 @@ def check_order(l1: List[str], l2: List[str]) -> bool:
     return l1 == l2
 
 
-def rename_duplicates(s: List[str]) -> List[str]:
+def rename_duplicates(s: list[str]) -> list[str]:
     """
     Add IDs to duplicate file names. From
     https://stackoverflow.com/a/30651843/2437514
     """
     assert isinstance(s, list), f's must be of type list, but is "{type(s)}".'
-    assert all(isinstance(i, str) for i in s), "s must be a List[str]"
+    assert all(isinstance(i, str) for i in s), "s must be a list[str]"
 
     dups = {}
 
@@ -85,15 +85,49 @@ def rename_duplicates(s: List[str]) -> List[str]:
     return s
 
 
-def _preprocess(img: np.ndarray, device: str) -> torch.FloatTensor:
-    assert (
-        len(img.shape) == 2
-    ), f"Input image is expected to be 2D, but is {len(img.shape)}D."
+def _to_gray2d(img, channel_axis=-1):
+    """
+    Convert an image that may be 2D grayscale or RGB/RGBA 'grayscale'
+    into a 2D grayscale array.
+
+    Parameters
+    ----------
+    img : np.ndarray or dask.array.Array
+        Input image. Expected shapes: (H, W), (H, W, 1), (H, W, 3|4).
+        If your data is channels-first, pass channel_axis=0.
+    channel_axis : int
+        Axis index of the color channels. Use -1 for channels-last, 0 for channels-first.
+
+    Returns
+    -------
+    gray : array-like
+        2D grayscale image.
+    """
+    a = img
+    if a.ndim == 2:
+        return a
+
+    # Move channels into the last axis to simplify logic
+    if channel_axis != -1:
+        a = np.moveaxis(a, channel_axis, -1)
+
+    if a.ndim != 3:
+        raise ValueError(f"Unsupported shape {a.shape}: expected 2D or 3D with a channel axis.")
+
+    H, W, C = a.shape
+
+    if C in (1, 3):
+        gray = a[..., 0]
+        return gray
+    else:
+        raise ValueError(f"Unsupported channel count {C}. Expected 1 or 3. 3D images are not supported.")
+
+
+def _preprocess(img: np.ndarray, device: str) -> torch.Tensor:
+    img = _to_gray2d(img)
 
     # convert input image to tensor
-    img = np.expand_dims(img, axis=2)
-    img = np.expand_dims(img, axis=2)
-    img = img.transpose((3, 2, 0, 1))  # (batch, colorchannel, height, width)
+    img = img[None, None, ...]  # (batch, colorchannel, H, W)
 
     # check for np.uint16 (not supported by torch) format
     if img.dtype == np.uint16:
@@ -111,7 +145,7 @@ def _preprocess(img: np.ndarray, device: str) -> torch.FloatTensor:
 
     img_t = torch.from_numpy(img).type(torch.FloatTensor)
 
-    # normalize tensor
+    # scale to [0,1] via std=max_intensity
     transform = transforms.Normalize(0, max_intensity)
     img_t = transform(img_t)
     img_t = img_t.to(device)
